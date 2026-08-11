@@ -70,7 +70,8 @@ if (child) {
 }
 
 // --- reglas por forma del nombre ---
-// Los positivos salieron del registro real de la app en hispasexy.org.
+// Los positivos salieron del registro real de la app navegando un foro con
+// publicidad agresiva: son dominios que existieron de verdad.
 for (const h of [
   'bagpipewraxle.qpon',
   'qt.fleeingrexes.cyou',
@@ -112,15 +113,15 @@ for (const h of [
 }
 
 // El sitio que estás visitando nunca se juzga por su nombre.
-assert.equal(sameSite('www.hispasexy.org', 'hispasexy.org'), true);
-assert.equal(sameSite('ads.otrodominio.cyou', 'hispasexy.org'), false);
+assert.equal(sameSite('www.foro-ejemplo.com', 'foro-ejemplo.com'), true);
+assert.equal(sameSite('ads.otrodominio.cyou', 'foro-ejemplo.com'), false);
 assert.equal(
   shouldBlockFrom('https://algo.cyou/x', 'algo.cyou', []),
   false,
   'entrar a propósito a un .cyou no se bloquea'
 );
 assert.equal(
-  shouldBlockFrom('https://otro.cyou/x', 'hispasexy.org', []),
+  shouldBlockFrom('https://otro.cyou/x', 'foro-ejemplo.com', []),
   true,
   'pero embebido desde otro sitio, sí'
 );

@@ -30,11 +30,14 @@ export type Rule = {
 };
 
 /**
- * Tope de reglas por lista. Apple compila listas grandes, pero el consumo de
- * memoria durante la compilación crece rápido y en un teléfono con poca RAM libre
- * puede fallar. Varias listas chicas se instalan igual de bien.
+ * Tope de reglas por lista.
+ *
+ * Estaba en 25.000, que daba tandas de 4 MB de JSON: compilarlas hacía que iOS
+ * matara la app por tardar demasiado. Con tandas chicas el trabajo total es el
+ * mismo pero cada paso termina rápido y el sistema no considera que la app se
+ * colgó. Varias listas chicas se instalan igual de bien que pocas grandes.
  */
-export const CHUNK = 25000;
+export const CHUNK = 8000;
 
 /** Escapa un dominio para meterlo dentro de la expresión del `url-filter`. */
 function escapeHost(host: string): string {

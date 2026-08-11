@@ -33,6 +33,8 @@ export function SettingsView({
   listsState,
   onUpdateLists,
   nativeState,
+  onCompileRules,
+  onResetRules,
 }: {
   visible: boolean;
   settings: Settings;
@@ -43,6 +45,8 @@ export function SettingsView({
   listsState: UpdateState;
   onUpdateLists: () => void;
   nativeState: NativeState;
+  onCompileRules: () => void;
+  onResetRules: () => void;
 }) {
   const engines = Object.keys(ENGINES) as Engine[];
 
@@ -185,12 +189,34 @@ export function SettingsView({
               </Text>
             </>
           )}
+          {nativeState.phase === 'idle' && (
+            <>
+              <Text style={styles.info}>Por JavaScript</Text>
+              <Text style={styles.sub}>
+                {nativeState.failedBefore
+                  ? 'La compilación anterior quedó a medias y se limpió. Podés volver a intentarla.'
+                  : 'Podés pasar al motor del sistema: bloquea antes de que el pedido salga del teléfono, también dentro de los marcos, y no pesa en cada página.'}
+              </Text>
+              <Pressable
+                onPress={onCompileRules}
+                style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+              >
+                <Text style={[styles.label, styles.action]}>Activar bloqueo nativo</Text>
+              </Pressable>
+              <Text style={styles.sub}>
+                Tarda unos minutos y se hace una sola vez. Dejá la app abierta mientras
+                trabaja
+              </Text>
+            </>
+          )}
           {nativeState.phase === 'compiling' && (
             <>
-              <Text style={styles.info}>Compilando reglas…</Text>
+              <Text style={styles.info}>
+                Compilando… {Math.round((nativeState.done / nativeState.total) * 100)}%
+              </Text>
               <Text style={styles.sub}>
-                Tanda {nativeState.done + 1} de {nativeState.total}. Pasa una sola vez;
-                después queda guardado
+                Tanda {nativeState.done + 1} de {nativeState.total}. No cierres la app.
+                Se hace una sola vez; después queda guardado
               </Text>
             </>
           )}
@@ -202,13 +228,27 @@ export function SettingsView({
                 pedido salga del teléfono, también dentro de los marcos, y no pesan en
                 cada página
               </Text>
+              <Pressable
+                onPress={onResetRules}
+                style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+              >
+                <Text style={[styles.label, styles.action]}>Volver a JavaScript</Text>
+              </Pressable>
             </>
           )}
           {nativeState.phase === 'error' && (
-            <Text style={styles.fail}>
-              No se pudieron compilar las reglas: {nativeState.message}. Sigue el
-              bloqueo por JavaScript.
-            </Text>
+            <>
+              <Text style={styles.fail}>
+                No se pudieron compilar las reglas: {nativeState.message}. Sigue el
+                bloqueo por JavaScript.
+              </Text>
+              <Pressable
+                onPress={onResetRules}
+                style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+              >
+                <Text style={[styles.label, styles.action]}>Limpiar y reintentar</Text>
+              </Pressable>
+            </>
           )}
         </Section>
 

@@ -623,6 +623,8 @@ function Browser() {
         listsState={listsState.state}
         onUpdateLists={listsState.update}
         nativeState={nativeRules.state}
+        onCompileRules={() => void nativeRules.build()}
+        onResetRules={() => void nativeRules.reset()}
       />
 
       {panel === 'diag' && (

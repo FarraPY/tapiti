@@ -39,7 +39,7 @@ import {
 } from './src/blocking/shouldBlock';
 import { setSiteCss, siteCssFor } from './src/blocking/siteCss';
 import { useLists } from './src/blocking/updateLists';
-import { attachRules, useNativeRules, type NativeState } from './src/blocking/nativeRules';
+import type { NativeState } from './src/blocking/nativeRules';
 import { diag, type DiagKind } from './src/diag';
 import { suggest, useHistory, type Visit } from './src/history';
 import { useSession } from './src/session';
@@ -119,10 +119,7 @@ function Browser() {
   const session = useSession();
   const listsState = useLists();
   const lists = listsState.lists;
-  // Fase 2: reglas compiladas para el motor de WebKit. En Expo Go queda en
-  // 'unsupported' y todo sigue funcionando con el bloqueo por JavaScript.
-  const nativeRules = useNativeRules(lists, listsState.loaded);
-  const nativeReady = nativeRules.state.phase === 'ready';
+  const nativeReady = false;
 
   const nextId = useRef(0);
   const webRefs = useRef<Record<string, WebView | null>>({});
@@ -536,7 +533,7 @@ function Browser() {
                     thumbNav.current = { url, at: Date.now() };
                   }}
                   onFind={setFound}
-                  nativeState={nativeRules.state}
+                  nativeState={{ phase: 'unsupported' }}
                   onRescue={() => rescueNav(tab.id)}
                 />
               </View>
@@ -622,9 +619,9 @@ function Browser() {
         lists={lists}
         listsState={listsState.state}
         onUpdateLists={listsState.update}
-        nativeState={nativeRules.state}
-        onCompileRules={() => void nativeRules.build()}
-        onResetRules={() => void nativeRules.reset()}
+        nativeState={{ phase: 'unsupported' }}
+        onCompileRules={() => {}}
+        onResetRules={() => {}}
       />
 
       {panel === 'diag' && (
@@ -705,15 +702,7 @@ function TabWebView({
   const source = useMemo(() => ({ uri: tab.uri }), [tab.uri]);
   /** Cuándo empezó cada navegación de la pestaña entera, para detectar cadenas. */
   const navTimes = useRef<number[]>([]);
-  const rulesAttached = useRef(false);
 
-  // Si las reglas terminan de compilar con la vista ya creada, hay que engancharlas
-  // igual: la próxima página que abras ya sale filtrada.
-  useEffect(() => {
-    if (nativeState.phase !== 'ready') return;
-    rulesAttached.current = true;
-    void attachRules(findNodeHandle(ref.current), nativeState);
-  }, [nativeState]);
   return (
     <WebView
       ref={(r) => {
@@ -738,12 +727,6 @@ function TabWebView({
         if (!nav.loading && !settings.privateMode) onVisit(nav.url, nav.title || '');
       }}
       onLoadStart={(e) => {
-        // Las reglas compiladas se enganchan a la vista, no a la página, así que
-        // alcanza con hacerlo una vez por vista.
-        if (!rulesAttached.current) {
-          rulesAttached.current = true;
-          void attachRules(findNodeHandle(ref.current), nativeState);
-        }
         log(tab.id, 'nav', `abriendo ${e.nativeEvent.url.slice(0, 70)}`);
         onPatch({
           blocked: [],

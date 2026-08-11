@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a20"/>
+      <stop offset="100%" stop-color="#08080a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- Liebre facetada: todo rectas, ni una curva. El volumen sale de que las caras
+       de la izquierda van en el tono apagado y las de la derecha en blanco puro,
+       sin sombras ni degradados encima de la figura. -->
+  <g id="hare">
+    <!-- oreja izquierda -->
+    <path fill="#c3c3ce" d="M362 108 L438 196 L470 470 L408 470 Z"/>
+    <path fill="#ffffff" d="M438 196 L470 470 L446 470 L424 214 Z" opacity="0.55"/>
+    <!-- oreja derecha -->
+    <path fill="#ffffff" d="M662 108 L586 196 L554 470 L616 470 Z"/>
+    <path fill="#c3c3ce" d="M586 196 L554 470 L578 470 L600 214 Z" opacity="0.45"/>
+    <!-- cabeza: hexágono partido al medio -->
+    <path fill="#c3c3ce" d="M512 424 L512 838 L344 700 L344 520 Z"/>
+    <path fill="#ffffff" d="M512 424 L680 520 L680 700 L512 838 Z"/>
+    <!-- hocico: una faceta que corta la punta -->
+    <path fill="#c3c3ce" d="M512 838 L680 700 L512 748 Z" opacity="0.35"/>
+  </g>
+</svg>

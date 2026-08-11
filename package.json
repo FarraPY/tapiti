@@ -1,16 +1,22 @@
 {
-  "name": "escudo-browser",
+  "name": "tapiti",
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
-    "expo": "~57.0.12",
-    "expo-status-bar": "~57.0.1",
-    "react": "19.2.3",
-    "react-native": "0.86.2"
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "expo": "~54.0.36",
+    "expo-status-bar": "~3.0.9",
+    "expo-symbols": "~1.0.8",
+    "expo-web-browser": "~15.0.11",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-webview": "13.15.0"
   },
   "devDependencies": {
-    "@types/react": "~19.2.2",
-    "typescript": "~6.0.3"
+    "@types/react": "~19.1.10",
+    "sharp": "^0.35.3",
+    "typescript": "~5.9.2"
   },
   "scripts": {
     "start": "expo start",

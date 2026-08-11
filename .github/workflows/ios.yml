@@ -4,7 +4,7 @@ name: Compilar IPA
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, prueba-sin-nativo]
 
 jobs:
   build:
